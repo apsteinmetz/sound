@@ -37,12 +37,12 @@ data_wf <- workflow() %>%
 lr_fit <- data_wf %>% 
    fit(data = train_data)
 
-View(tidy(lr_fit))
+#View(tidy(lr_fit))
 
-tidy(lr_fit) %>% 
-   dwplot(dot_args = list(size = 2, color = "black"),
-          whisker_args = list(color = "black"),
-          vline = geom_vline(xintercept = 0, colour = "grey50", linetype = 2))
+#tidy(lr_fit) %>% 
+#   dwplot(dot_args = list(size = 2, color = "black"),
+#          whisker_args = list(color = "black"),
+#          vline = geom_vline(xintercept = 0, colour = "grey50", linetype = 2))
 
 voice_pred <- 
    predict(lr_fit, test_data, type = "prob") %>% 
@@ -50,3 +50,7 @@ voice_pred <-
 
 voice_pred %>% 
    roc_auc(truth = type, .pred_music)
+
+voice_pred %>% 
+   roc_curve(truth = type, .pred_music) %>% 
+   autoplot()
